@@ -1,3 +1,28 @@
+local TOP_BOUNCE = {
+  ull = "dll",
+  ul  = "dl",
+  uul = "ddl",
+  u   = "d",
+  uur = "ddr",
+  ur  = "dr",
+  urr = "drr"
+}
+
+local WALL_BOUNCE = {
+  uur = "uul",
+  ur  = "ul",
+  urr = "ull",
+  drr = "dll",
+  dr  = "dl",
+  ddr = "ddl",
+  ddl = "ddr",
+  dl  = "dr",
+  dll = "drr",
+  ull = "urr",
+  ul  = "ur",
+  uul = "uur"
+}
+
 function love.load()
   -- WINDOW SETUP
   love.window.setTitle("Block Buster")
@@ -51,14 +76,7 @@ function love.load()
 
   -- CHECK TOP FOR BOUNCE
   function topbounce()
-    if ball.direction == "ull" then ball.direction = "dll"
-    elseif ball.direction == "ul" then ball.direction = "dl"
-    elseif ball.direction == "uul" then ball.direction = "ddl"
-    elseif ball.direction == "u" then ball.direction = "d"
-    elseif ball.direction == "uur" then ball.direction = "ddr"
-    elseif ball.direction == "ur" then ball.direction = "dr"
-    elseif ball.direction == "urr" then ball.direction = "drr"
-    end
+    ball.direction = TOP_BOUNCE[ball.direction]
   end
 
 end
@@ -112,19 +130,7 @@ function love.update(dt)
 
   -- Bounces ball off walls
   if (ball.x <= 0) or (ball.x >= width) then
-    if ball.direction == "uur" then ball.direction = "uul"
-    elseif ball.direction == "ur" then ball.direction = "ul"
-    elseif ball.direction == "urr" then ball.direction = "ull"
-    elseif ball.direction == "drr" then ball.direction = "dll"
-    elseif ball.direction == "dr" then ball.direction = "dl"
-    elseif ball.direction == "ddr" then ball.direction = "ddl"
-    elseif ball.direction == "ddl" then ball.direction = "ddr"
-    elseif ball.direction == "dl" then ball.direction = "dr"
-    elseif ball.direction == "dll" then ball.direction = "drr"
-    elseif ball.direction == "ull" then ball.direction = "urr"
-    elseif ball.direction == "ul" then ball.direction = "ur"
-    elseif ball.direction == "uul" then ball.direction = "uur"
-    end
+    ball.direction = WALL_BOUNCE[ball.direction]
   end
 
   -- Bounce ball off ceiling
