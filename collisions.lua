@@ -37,10 +37,10 @@ function collisions.platform_walls_collision(platform, walls)
                 width  = wall.width,
                 height = wall.height }
 
-    overlap, shift_platform_x, shift_platform_y = collisions.check_rectangles_overlap(a,b)
+    overlap, shift_platform_x, shift_platform_y = collisions.check_rectangles_overlap(b, a)
 
     if overlap then  
-      platform.rebound(vector(shift_platform_x, shift_platform_y))              
+      platform.rebound(shift_platform_x)              
     end  
   end  
 end

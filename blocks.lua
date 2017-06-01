@@ -1,12 +1,12 @@
 local blocks = {}
 
-function blocks.load()
+function blocks.load(height, width)
   blocks.rows = 8              
-  blocks.columns = 11
-  blocks.top_left_position_x = 70
-  blocks.top_left_position_y = 50
-  blocks.block_width = 50
-  blocks.block_height = 30
+  blocks.columns = 13
+  blocks.top_left_position_x = 50
+  blocks.top_left_position_y = 40
+  blocks.block_width = (width - 150) / 14
+  blocks.block_height = (height/2 - 100) / 8
   blocks.horizontal_distance = 10
   blocks.vertical_distance = 15
   blocks.current_level_blocks = {}

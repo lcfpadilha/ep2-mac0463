@@ -1,13 +1,15 @@
 local vector = require "vector"
 local ball = {}
 local sign = math.sign or function(x) return x < 0 and -1 or x > 0 and 1 or 0 end
+local initial_speed_y
 
-function ball.load()
+function ball.load(height, width)
   ball.position = vector(200, 500)
-  ball.speed    = vector(0, -250)
-  ball.radius  = 5
+  ball.speed    = vector(0, 0)
+  ball.radius  = 0.005 * width
   ball.collision_counter = 0
   ball.stuck_on_platform = true
+  initial_speed_y = height / 2.5
 end
 
 function ball.update(dt, platform)
@@ -35,7 +37,8 @@ end
 function ball.launch_from_platform()
    if ball.stuck_on_platform then
       ball.stuck_on_platform = false
-      ball.speed = vector(math.random(-150, 150), math.random(100, 300))
+      math.randomseed(os.time())
+      ball.speed = vector(math.random(-150, 150), initial_speed_y)
    end
 end
 

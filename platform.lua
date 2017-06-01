@@ -1,14 +1,25 @@
 local vector   = require 'vector'
 local platform = {}
 
-function platform.load() 
-  platform.position = vector(500, 550)
-  platform.speed    = vector(300, 0)
-  platform.width    = 80
-  platform.height   = 10
+function platform.load(height, width) 
+  platform.position = vector(width / 2, height - 50)
+  platform.speed    = vector(width / 3, 0)
+  platform.width    = width / 10
+  platform.height   = 0.02 * height
 end
 
 function platform.update(dt)
+  local touches = love.touch.getTouches()
+
+  for i, id in ipairs(touches) do
+    local x, y = love.touch.getPosition(id)
+    if x > platform.position.x then
+      platform.position = platform.position + (platform.speed * dt)
+    elseif x < platform.position.x then
+      platform.position = platform.position - (platform.speed * dt)
+    end
+  end
+
   if love.keyboard.isDown("right") then
     platform.position = platform.position + (platform.speed * dt)
   end
@@ -25,16 +36,8 @@ function platform.draw()
           platform.height )
 end
 
-function platform.rebound(shift_platform)
-  local min_shift = math.min(math.abs(shift_platform.x), math.abs(shift_platform.y))
-
-  if math.abs(shift_platform.x) == min_shift then
-    shift_platform.y = 0
-  else
-    shift_platform.x = 0
-  end
-
-  platform.position = platform.position + shift_platform
+function platform.rebound(shift_platform_x)
+  platform.position.x = platform.position.x + shift_platform_x
 end
 
 return platform

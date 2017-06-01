@@ -4,11 +4,16 @@ local blocks     = require 'blocks'
 local walls      = require 'walls'
 local levels     = require 'levels'
 local collisions = require 'collisions'
+local width
+local height
 
 function love.load()
-  platform.load()
-  ball.load()
-  blocks.load()
+  success = love.window.setFullscreen(true)
+  width, height, flags = love.window.getMode()
+
+  platform.load(height, width)
+  ball.load(height, width)
+  blocks.load(height, width)
   walls.load()
   levels.load()
   blocks.construct_level(levels.sequence[1])  
@@ -21,6 +26,9 @@ function love.update(dt)
   collisions.resolve_collisions(ball, blocks, walls, platform)
   blocks.update(dt)
   levels.switch_to_next_level(blocks)
+  if ball.position.y > height then
+    ball.stuck_on_platform = true
+  end
 end
  
 function love.draw()
@@ -32,7 +40,7 @@ function love.draw()
       love.graphics.printf("Congratulations!\n" ..
              "You have finished the game!",
           300, 250, 200, "center")
-   end
+  end
 end
 
 function love.keyreleased(key, code)
@@ -41,6 +49,6 @@ function love.keyreleased(key, code)
   end
 end
 
-function love.quit()
-  print("Thanks for playing! Come back soon!")
+function love.touchpressed(id, x, y, dx, dy, pressure)
+  ball.launch_from_platform()
 end
