@@ -141,7 +141,13 @@ end
 
 function ball.reposition()
   ball.position.x = 200
-  ball.position.y = 500 
+  ball.position.y = 500
+end
+
+-- criei essa funcao pra qnd o jogo acaba e recomeca pq n achei o que vc faz qnd a bola morre
+function ball.reposition(height, width)
+  ball.position.x = height / 2
+  ball.position.y = width - 100
 end
 
 return ball

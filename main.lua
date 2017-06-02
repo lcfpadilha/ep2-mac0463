@@ -28,7 +28,7 @@ function love.update(dt)
     platform.update(dt)
     collisions.resolve_collisions(ball, blocks, walls, platform)
     blocks.update(dt)
-    levels.switch_to_next_level(blocks)
+    switch_to_next_level(blocks)
     if ball.position.y > height then
       ball.stuck_on_platform = true
     end
@@ -56,7 +56,7 @@ function love.draw()
       "Jogo está pausado. Clique para continuar.", 50, 50)
   elseif gamestate == "gamefinished" then
     love.graphics.printf("Parabéns!\n" ..
-           "Você finalizou o jogo! Clique para ir ao menu!",
+           "Você finalizou o jogo! Clique para recomeçar!",
         300, 250, 200, "center")
   end
 
@@ -84,9 +84,10 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
   elseif gamestate == "gamefinished" then
     if key == "return" then
       levels.current_level = 1
-      level = levels.require_current_level()
-      blocks.construct_level( level )
-      ball.reposition()
+
+      blocks.construct_level(levels.sequence[1])
+      ball.reposition(height, width)
+      levels.load()
       gamestate = "game"
     elseif key == 'escape' then
       love.event.quit()
@@ -105,7 +106,7 @@ function switch_to_next_level(blocks)
     if levels.current_level < #levels.sequence then  
       levels.current_level = levels.current_level + 1
       blocks.construct_level(levels.sequence[levels.current_level]) 
-      ball.reposition()                                                
+      ball.load(height, width)                                               
     else
       --levels.gamefinished = true
       gamestate = "gamefinished"                     
