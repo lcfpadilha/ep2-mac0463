@@ -19,10 +19,11 @@ function levels.switch_to_next_level(blocks)
   if blocks.no_more_blocks then
     if levels.current_level < #levels.sequence then  
       levels.current_level = levels.current_level + 1
-      bricks.construct_level(levels.sequence[levels.current_level]) 
+      blocks.construct_level(levels.sequence[levels.current_level]) 
       ball.reposition()                                                
     else
-      levels.gamefinished = true                     
+      --levels.gamefinished = true
+      gamestate = "gamefinished"                     
     end
   end
 end
