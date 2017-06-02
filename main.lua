@@ -98,6 +98,7 @@ end
 
 function love.touchpressed(id, x, y, dx, dy, pressure)
   ball.launch_from_platform()
+  -- TODO comandos do keyrelease para android
 end
 
 -- funcao originalmente do levels.lua
