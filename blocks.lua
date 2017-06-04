@@ -1,15 +1,18 @@
-local blocks = {}
+local blocks    = {}
+local block_img = love.graphics.newImage('block_small_red.png')
+local scaleX, scaleY
 
 function blocks.load(height, width)
-  blocks.rows = 8              
-  blocks.columns = 13
-  blocks.top_left_position_x = 50
-  blocks.top_left_position_y = 40
-  blocks.block_width = (width - 150) / 14
-  blocks.block_height = (height/2 - 100) / 8
-  blocks.horizontal_distance = 10
-  blocks.vertical_distance = 15
+  blocks.rows = 7          
+  blocks.columns = 5
+  blocks.top_left_position_x = width * 0.08
+  blocks.top_left_position_y = height * 0.12
+  blocks.block_width = (0.97 * width) / 6
+  blocks.block_height = (height/2 - 100) / 7
+  blocks.horizontal_distance = 2
+  blocks.vertical_distance = 2
   blocks.current_level_blocks = {}
+  scaleX, scaleY = getImageScaleForNewDimensions(block_img, blocks.block_width, blocks.block_height)
 end
 
 function blocks.new_block(position_x, position_y, width, height)
@@ -20,11 +23,12 @@ function blocks.new_block(position_x, position_y, width, height)
 end
 
 function blocks.draw_block(single_block)
-  love.graphics.rectangle('line',
-                           single_block.position_x,
-                           single_block.position_y,
-                           single_block.width,
-                           single_block.height)   
+  love.graphics.draw(block_img,
+                     single_block.position_x,
+                     single_block.position_y,
+                     0,
+                     scaleX,
+                     scaleY)   
 end
 
 function blocks.construct_level(level_blocks_arrangement)
@@ -68,6 +72,11 @@ end
 
 function blocks.block_hit_by_ball(i, block, shift_ball_x, shift_ball_y)
    table.remove(blocks.current_level_blocks, i)                
+end
+
+function getImageScaleForNewDimensions(image, newWidth, newHeight)
+    local currentWidth, currentHeight = image:getDimensions()
+    return (newWidth / currentWidth), (newHeight / currentHeight)
 end
 
 return blocks

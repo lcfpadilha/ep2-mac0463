@@ -1,10 +1,11 @@
-local vector   = require 'vector'
-local platform = {}
+local vector         = require 'vector'
+local platform       = {}
+local platform_image = love.graphics.newImage('platform.png')
 
 function platform.load(height, width) 
-  platform.position = vector(width / 2, height - 50)
-  platform.speed    = vector(width / 3, 0)
-  platform.width    = width / 10
+  platform.position = vector(width / 2, 0.95*height)
+  platform.speed    = vector(width / 1.5, 0)
+  platform.width    = width / 5
   platform.height   = 0.02 * height
 end
 
@@ -29,11 +30,9 @@ function platform.update(dt)
 end
 
 function platform.draw()
-  love.graphics.rectangle( 'line',
+  love.graphics.draw(platform_image,
           platform.position.x,
-          platform.position.y,
-          platform.width,
-          platform.height )
+          platform.position.y )
 end
 
 function platform.rebound(shift_platform_x)

@@ -2,14 +2,17 @@ local vector = require "vector"
 local ball = {}
 local sign = math.sign or function(x) return x < 0 and -1 or x > 0 and 1 or 0 end
 local initial_speed_y
+local scaleX, scaleY
+local ball_img = love.graphics.newImage('ball_gray.png')
 
 function ball.load(height, width)
   ball.position = vector(200, 500)
   ball.speed    = vector(0, 0)
-  ball.radius  = 0.005 * width
+  ball.radius  = width * 0.02
   ball.collision_counter = 0
   ball.stuck_on_platform = true
-  initial_speed_y = height / 2.5
+  initial_speed_y = height / 2.0
+  scaleX, scaleY = getImageScaleForNewDimensions(ball_img, width * 0.04, width * 0.04)
 end
 
 function ball.update(dt, platform)
@@ -20,11 +23,12 @@ function ball.update(dt, platform)
 end
 
 function ball.draw()
-  love.graphics.circle( 'line',
-       ball.position.x,
-       ball.position.y,
-       ball.radius,
-       segments_in_circle )
+  love.graphics.draw(ball_img,
+       ball.position.x - ball.radius,
+       ball.position.y - ball.radius,
+       0,
+       scaleX,
+       scaleY)
 end
 
 function ball.follow_platform(platform)
@@ -148,6 +152,11 @@ end
 function ball.reposition(height, width)
   ball.position.x = height / 2
   ball.position.y = width - 100
+end
+
+function getImageScaleForNewDimensions(image, newWidth, newHeight)
+    local currentWidth, currentHeight = image:getDimensions()
+    return (newWidth / currentWidth), (newHeight / currentHeight)
 end
 
 return ball

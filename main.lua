@@ -1,24 +1,28 @@
-local platform   = require 'platform'
-local ball       = require 'ball'
-local blocks     = require 'blocks'
-local walls      = require 'walls'
-local levels     = require 'levels'
-local collisions = require 'collisions'
+local platform    = require 'platform'
+local ball        = require 'ball'
+local blocks      = require 'blocks'
+local walls       = require 'walls'
+local levels      = require 'levels'
+local collisions  = require 'collisions'
 local width
 local height
+local bla = ""
 local gamestate = "menu"
 
 function love.load()
-  success = love.window.setFullscreen(true)
+  -- width, height, flags = 320, 526, {}
+  -- success = love.window.setMode(width, height, flags)
   width, height, flags = love.window.getMode()
-
+  
   platform.load(height, width)
-  ball.load(height, width)
   blocks.load(height, width)
-  walls.load()
+  ball.load(height, width)
+  walls.load(height, width)
   levels.load()
   blocks.construct_level(levels.sequence[1])  
   walls.construct_walls()
+  levels.play_audio()
+  love.graphics.setBackgroundColor(57, 179, 198)
 end
  
 function love.update(dt)
@@ -41,7 +45,7 @@ end
 function love.draw()
   if gamestate == "menu" then
     love.graphics.printf("Menu. Clique para continuar.",
-          300, 250, 200, "center")
+          (width/2)-100, height/2, 200, "center")
   elseif gamestate == "game" then
     platform.draw()
     ball.draw()
@@ -52,12 +56,12 @@ function love.draw()
     ball.draw()
     blocks.draw()
     walls.draw()
-    love.graphics.print(
-      "Jogo está pausado. Clique para continuar.", 50, 50)
+    love.graphics.printf(tostring(bla).." "..tostring(height), 
+      (width/2)-100, height/2, 200, "center")
   elseif gamestate == "gamefinished" then
     love.graphics.printf("Parabéns!\n" ..
            "Você finalizou o jogo! Clique para recomeçar!",
-        300, 250, 200, "center")
+        (width/2)-100, height/2, 200, "center")
   end
 
 end
@@ -72,7 +76,7 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
   elseif gamestate == "game" then
     if key == 'space' or key == ' ' then
       ball.launch_from_platform()
-    elseif key == 'escape' then
+    elseif key == 'menu' or key == 'return' then
       gamestate = "gamepaused"
     end
   elseif gamestate == "gamepaused" then
