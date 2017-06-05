@@ -1,10 +1,10 @@
 local vector          = require 'vector'
 local collisions      = {}
 
-function collisions.resolve_collisions(ball, blocks, walls, platform)
+function collisions.resolve_collisions(ball, blocks, walls, platform, game)
   collisions.ball_platform_collision (ball, platform)
   collisions.ball_walls_collision (ball, walls)
-  collisions.ball_blocks_collision (ball, blocks)
+  collisions.ball_blocks_collision (ball, blocks, game)
   collisions.platform_walls_collision (platform, walls)
 end
 
@@ -69,7 +69,7 @@ function collisions.ball_walls_collision(ball, walls)
   end  
 end
 
-function collisions.ball_blocks_collision(ball, blocks)
+function collisions.ball_blocks_collision(ball, blocks, game)
   local a = { x = ball.position.x - ball.radius,                 
               y = ball.position.y - ball.radius,
               width = 2 * ball.radius,
@@ -86,6 +86,7 @@ function collisions.ball_blocks_collision(ball, blocks)
     if overlap then  
       collision_sound = love.audio.newSource("button-10.wav", "stream")
       love.audio.play(collision_sound)
+      game.block_destroy()
       ball.block_rebound(vector(shift_ball_x, shift_ball_y))
       blocks.block_hit_by_ball(i, brick, shift_ball_x, shift_ball_y)               
     end   

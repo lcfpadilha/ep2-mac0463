@@ -4,6 +4,7 @@ local blocks      = require 'blocks'
 local walls       = require 'walls'
 local levels      = require 'levels'
 local collisions  = require 'collisions'
+local game        = require 'game'
 local gamestate   = "game"
 local width
 local height
@@ -18,6 +19,7 @@ function love.load()
   ball.load(height, width, platform)
   walls.load(height, width)
   levels.load()
+  game.load()
   blocks.construct_level(levels.sequence[1])  
   walls.construct_walls()
   levels.play_audio()
@@ -26,19 +28,25 @@ end
  
 function love.update(dt)
   if gamestate == "menu" then
+    levels.update()
   elseif gamestate == "game" then
+    levels.update()
     ball.update(dt, platform)
     platform.update(dt)
-    collisions.resolve_collisions(ball, blocks, walls, platform)
+    collisions.resolve_collisions(ball, blocks, walls, platform, game)
     blocks.update(dt)
-    if levels.check_life_lost(ball, height) == false then
+    if game.check_life_lost(ball, height) == false then
       gamestate = "gameover"
     end
     switch_to_next_level(blocks)
   elseif gamestate == "gamechangelevel" then
-  elseif gamestate == "gamepaused" then  
+    levels.update()
+  elseif gamestate == "gamepaused" then
+    levels.update()
   elseif gamestate == "gamefinished" then
+    levels.update()
   elseif gamestate == "gameover" then
+    levels.update()
   end
 
 end
@@ -52,13 +60,13 @@ function love.draw()
     ball.draw()
     blocks.draw()
     walls.draw()
-    levels.draw_life()
+    game.draw_hud()
   elseif gamestate == "gamepaused" then
     platform.draw()
     ball.draw()
     blocks.draw()
     walls.draw()
-    levels.draw_life()
+    game.draw_hud()
     love.graphics.printf("Jogo pausado!", 
       (width/2)-100, height/2, 200, "center")
   elseif gamestate == "gamechangelevel" then
@@ -66,7 +74,7 @@ function love.draw()
     ball.draw()
     blocks.draw()
     walls.draw()
-    levels.draw_life()
+    game.draw_hud()
     levels.draw_level(width, height)
   elseif gamestate == "gamefinished" then
     love.graphics.printf("Parabéns!\n" ..
