@@ -24,6 +24,11 @@ function levels.draw_level(width, height)
       (width/2)-100, height/2, 200, "center")
 end
 
+function levels.change_level()
+  levels.current_level = levels.current_level + 1
+  love.audio.stop(levels.audio_source[levels.current_level - 1])
+end
+
 function create_all_levels()
   levels.sequence[1] = {
     { 1, 1, 1, 1, 1 },

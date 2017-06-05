@@ -117,7 +117,7 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
       levels.current_level = 1
 
       blocks.construct_level(levels.sequence[1])
-      ball.reposition(height, width)
+      ball.load(height, width, platform)
       levels.load()
       gamestate = "game"
     elseif key == 'escape' then
@@ -135,7 +135,7 @@ end
 function switch_to_next_level(blocks)
   if blocks.no_more_blocks then
     if levels.current_level < #levels.sequence then  
-      levels.current_level = levels.current_level + 1
+      levels.change_level()
       blocks.construct_level(levels.sequence[levels.current_level]) 
       platform.load(height, width)
       gamestate = "gamechangelevel"                                               
