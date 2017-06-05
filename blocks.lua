@@ -1,5 +1,5 @@
 local blocks    = {}
-local block_img = love.graphics.newImage('block_small_red.png')
+local block_img = love.graphics.newImage('block_red_rectangle.png')
 local scaleX, scaleY
 
 function blocks.load(height, width)
@@ -9,8 +9,8 @@ function blocks.load(height, width)
   blocks.top_left_position_y = height * 0.12
   blocks.block_width = (0.97 * width) / 6
   blocks.block_height = (height/2 - 100) / 7
-  blocks.horizontal_distance = 2
-  blocks.vertical_distance = 2
+  blocks.horizontal_distance = 0
+  blocks.vertical_distance = 0
   blocks.current_level_blocks = {}
   scaleX, scaleY = getImageScaleForNewDimensions(block_img, blocks.block_width, blocks.block_height)
 end

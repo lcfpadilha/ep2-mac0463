@@ -4,19 +4,18 @@ local blocks      = require 'blocks'
 local walls       = require 'walls'
 local levels      = require 'levels'
 local collisions  = require 'collisions'
+local gamestate   = "game"
 local width
 local height
-local bla = ""
-local gamestate = "menu"
 
 function love.load()
-  -- width, height, flags = 320, 526, {}
-  -- success = love.window.setMode(width, height, flags)
-  width, height, flags = love.window.getMode()
+  width, height, flags = 320, 526, {}
+  success = love.window.setMode(width, height, flags)
+  -- width, height, flags = love.window.getMode()
   
   platform.load(height, width)
   blocks.load(height, width)
-  ball.load(height, width)
+  ball.load(height, width, platform)
   walls.load(height, width)
   levels.load()
   blocks.construct_level(levels.sequence[1])  
@@ -26,18 +25,20 @@ function love.load()
 end
  
 function love.update(dt)
-  if gamestate == "menu" then               -- nada para atualizar
+  if gamestate == "menu" then
   elseif gamestate == "game" then
     ball.update(dt, platform)
     platform.update(dt)
     collisions.resolve_collisions(ball, blocks, walls, platform)
     blocks.update(dt)
-    switch_to_next_level(blocks)
-    if ball.position.y > height then
-      ball.stuck_on_platform = true
+    if levels.check_life_lost(ball, height) == false then
+      gamestate = "gameover"
     end
-  elseif gamestate == "gamepaused" then     -- nada para atualizar
+    switch_to_next_level(blocks)
+  elseif gamestate == "gamechangelevel" then
+  elseif gamestate == "gamepaused" then  
   elseif gamestate == "gamefinished" then
+  elseif gamestate == "gameover" then
   end
 
 end
@@ -51,16 +52,29 @@ function love.draw()
     ball.draw()
     blocks.draw()
     walls.draw()
+    levels.draw_life()
   elseif gamestate == "gamepaused" then
     platform.draw()
     ball.draw()
     blocks.draw()
     walls.draw()
-    love.graphics.printf(tostring(bla).." "..tostring(height), 
+    levels.draw_life()
+    love.graphics.printf("Jogo pausado!", 
       (width/2)-100, height/2, 200, "center")
+  elseif gamestate == "gamechangelevel" then
+    platform.draw()
+    ball.draw()
+    blocks.draw()
+    walls.draw()
+    levels.draw_life()
+    levels.draw_level(width, height)
   elseif gamestate == "gamefinished" then
     love.graphics.printf("Parabéns!\n" ..
            "Você finalizou o jogo! Clique para recomeçar!",
+        (width/2)-100, height/2, 200, "center")
+    elseif gamestate == "gameover" then
+    love.graphics.printf("Você perdeu o jogo!\n" ..
+           "Clique para recomeçar!",
         (width/2)-100, height/2, 200, "center")
   end
 
@@ -80,10 +94,15 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
       gamestate = "gamepaused"
     end
   elseif gamestate == "gamepaused" then
-    if key == "return" then
+    if key == "menu" then
       gamestate = "game"
     elseif key == 'escape' then
       love.event.quit()
+    end
+  elseif gamestate == "gamechangelevel" then
+    if key == "space" then
+      gamestate = "game"
+      ball.load(height, width, platform)
     end
   elseif gamestate == "gamefinished" then
     if key == "return" then
@@ -97,7 +116,6 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
       love.event.quit()
     end
   end
-
 end
 
 function love.touchpressed(id, x, y, dx, dy, pressure)
@@ -111,7 +129,8 @@ function switch_to_next_level(blocks)
     if levels.current_level < #levels.sequence then  
       levels.current_level = levels.current_level + 1
       blocks.construct_level(levels.sequence[levels.current_level]) 
-      ball.load(height, width)                                               
+      platform.load(height, width)
+      gamestate = "gamechangelevel"                                               
     else
       --levels.gamefinished = true
       gamestate = "gamefinished"                     

@@ -5,12 +5,12 @@ local initial_speed_y
 local scaleX, scaleY
 local ball_img = love.graphics.newImage('ball_gray.png')
 
-function ball.load(height, width)
-  ball.position = vector(200, 500)
+function ball.load(height, width, platform)
   ball.speed    = vector(0, 0)
   ball.radius  = width * 0.02
   ball.collision_counter = 0
   ball.stuck_on_platform = true
+  ball.follow_platform(platform)
   initial_speed_y = height / 2.0
   scaleX, scaleY = getImageScaleForNewDimensions(ball_img, width * 0.04, width * 0.04)
 end
@@ -47,7 +47,7 @@ function ball.launch_from_platform()
 end
 
 function ball.block_rebound(shift_ball)
-  ball.normal_rebound( shift_ball )
+  ball.normal_rebound(shift_ball)
   ball.increase_collision_counter()
   ball.increase_speed_after_collision()
 end
@@ -141,11 +141,6 @@ function ball.determine_actual_shift(shift_ball)
       actual_shift.y = shift_ball.y
    end
    return actual_shift
-end
-
-function ball.reposition()
-  ball.position.x = 200
-  ball.position.y = 500
 end
 
 -- criei essa funcao pra qnd o jogo acaba e recomeca pq n achei o que vc faz qnd a bola morre
