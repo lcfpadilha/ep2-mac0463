@@ -37,8 +37,8 @@ function game.check_life_lost(ball, height)
     destroyed_blocks = 0
 
     if game.life == 0 then
-        if best_score < game.score then
-            best_score = game.score
+        if best_score < game.current_points  then
+            best_score = game.current_points 
         end
         return false
     end

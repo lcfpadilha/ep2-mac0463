@@ -98,11 +98,11 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
   elseif gamestate == "game" then
     if key == 'space' or key == ' ' then
       ball.launch_from_platform()
-    elseif key == 'menu' or key == 'return' then
+    elseif key == 'menu' or key == 'return' or key == "space" then
       gamestate = "gamepaused"
     end
   elseif gamestate == "gamepaused" then
-    if key == "menu" then
+    if key == "menu" or key == 'return' then
       gamestate = "game"
     elseif key == 'escape' then
       love.event.quit()
@@ -112,12 +112,17 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
       gamestate = "game"
       ball.load(height, width, platform)
     end
-  elseif gamestate == "gamefinished" then
-    if key == "return" then
+  elseif gamestate == "gamefinished" or gamestate == "gameover" then
+    if key == 'return' then
+
+      width, height, flags = 320, 526, {}
+      game.load()
+      platform.load(height, width)
+      blocks.load(height, width)
+      ball.load(height, width, platform)
       levels.current_level = 1
 
       blocks.construct_level(levels.sequence[1])
-      ball.load(height, width, platform)
       levels.load()
       gamestate = "game"
     elseif key == 'escape' then
@@ -127,7 +132,35 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
 end
 
 function love.touchpressed(id, x, y, dx, dy, pressure)
-  ball.launch_from_platform()
+  if gamestate == "menu" then
+    gamestate = "game"
+  elseif gamestate == "game" then
+    ball.launch_from_platform()
+  elseif gamestate == "gamepaused" then
+    gamestate = "game"
+  end
+
+  if gamestate == "menu" then
+    gamestate = "game"
+  elseif gamestate == "game" then
+    ball.launch_from_platform()
+  elseif gamestate == "gamepaused" then
+    gamestate = "game"
+  elseif gamestate == "gamechangelevel" then
+    gamestate = "game"
+    ball.load(height, width, platform)
+  elseif gamestate == "gamefinished" or gamestate == "gameover" then
+    width, height, flags = 320, 526, {}
+    game.load()
+    platform.load(height, width)
+    blocks.load(height, width)
+    ball.load(height, width, platform)
+    levels.current_level = 1
+
+    blocks.construct_level(levels.sequence[1])
+    levels.load()
+    gamestate = "game"
+  end  
   -- TODO comandos do keyrelease para android
 end
 
