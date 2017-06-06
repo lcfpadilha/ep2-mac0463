@@ -35,8 +35,8 @@ function platform.draw()
           platform.position.y )
 end
 
-function platform.rebound(shift_platform_x)
-  platform.position.x = platform.position.x + shift_platform_x
+function platform.rebound(shift_platform)
+  platform.position.x = platform.position.x + shift_platform.x
 end
 
 return platform

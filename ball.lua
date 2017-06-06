@@ -12,7 +12,7 @@ function ball.load(height, width, platform)
   ball.stuck_on_platform = true
   ball.follow_platform(platform)
   initial_speed_y = height / 2.0
-  scaleX, scaleY = getImageScaleForNewDimensions(ball_img, width * 0.04, width * 0.04)
+  scaleX, scaleY = getImageScaleForNewDimensions(ball_img, 2*ball.radius, 2*ball.radius)
 end
 
 function ball.update(dt, platform)
@@ -34,7 +34,7 @@ end
 function ball.follow_platform(platform)
   local x = platform.position.x + platform.width / 2
   local y = platform.position.y + platform.height / 2
-  local platform_center = vector (x, y)
+  local platform_center = vector(x, y)
   ball.position = platform_center
 end
 
@@ -53,34 +53,41 @@ function ball.block_rebound(shift_ball)
 end
 
 function ball.platform_rebound(shift_ball, platform)
-  ball.bounce_from_sphere( shift_ball, platform )
+  ball.bounce_from_sphere(shift_ball, platform)
   ball.increase_collision_counter()
   ball.increase_speed_after_collision()
 end
 
-function ball.wall_rebound( shift_ball )
-   ball.normal_rebound( shift_ball )
+function ball.wall_rebound(shift_ball)
+   ball.normal_rebound(shift_ball)
    ball.min_angle_rebound()
    ball.increase_collision_counter()
    ball.increase_speed_after_collision()
 end
 
-function ball.normal_rebound(shift_ball)
-  local min_shift = math.min(math.abs(shift_ball.x), math.abs(shift_ball.y))
+function ball.determine_actual_shift(shift_ball)
+  local actual_shift = vector(0, 0)
+  local min_shift = math.min(math.abs(shift_ball.x), math.abs(shift_ball.y))  
 
   if math.abs(shift_ball.x) == min_shift then
-    shift_ball.y = 0
+    actual_shift.x = shift_ball.x
   else
-    shift_ball.x = 0
+    actual_shift.y = shift_ball.y
   end
+  
+  return actual_shift
+end
 
-  ball.position = ball.position + shift_ball
+function ball.normal_rebound(shift_ball)
+  local actual_shift = ball.determine_actual_shift(shift_ball)
 
-  if shift_ball.x ~= 0 then
+  ball.position = ball.position + actual_shift
+
+  if actual_shift.x ~= 0 then
     ball.speed.x = -ball.speed.x
   end
 
-  if shift_ball.y ~= 0 then
+  if actual_shift.y ~= 0 then
     ball.speed.y = -ball.speed.y
   end
 end
@@ -131,17 +138,6 @@ function ball.increase_speed_after_collision()
   end
 end
 
-function ball.determine_actual_shift(shift_ball)
-   local actual_shift = vector(0, 0)
-   local min_shift = math.min(math.abs(shift_ball.x), math.abs(shift_ball.y))  
-
-   if math.abs(shift_ball.x) == min_shift then
-      actual_shift.x = shift_ball.x
-   else
-      actual_shift.y = shift_ball.y
-   end
-   return actual_shift
-end
 
 -- criei essa funcao pra qnd o jogo acaba e recomeca pq n achei o que vc faz qnd a bola morre
 function ball.reposition(height, width)

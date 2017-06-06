@@ -114,14 +114,11 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
     end
   elseif gamestate == "gamefinished" or gamestate == "gameover" then
     if key == 'return' then
-
-      width, height, flags = 320, 526, {}
       game.load()
       platform.load(height, width)
       blocks.load(height, width)
       ball.load(height, width, platform)
       levels.current_level = 1
-
       blocks.construct_level(levels.sequence[1])
       levels.load()
       gamestate = "game"
@@ -132,14 +129,6 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
 end
 
 function love.touchpressed(id, x, y, dx, dy, pressure)
-  if gamestate == "menu" then
-    gamestate = "game"
-  elseif gamestate == "game" then
-    ball.launch_from_platform()
-  elseif gamestate == "gamepaused" then
-    gamestate = "game"
-  end
-
   if gamestate == "menu" then
     gamestate = "game"
   elseif gamestate == "game" then

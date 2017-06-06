@@ -1,6 +1,11 @@
 local blocks    = {}
-local block_img = love.graphics.newImage('block_red_rectangle.png')
 local scaleX, scaleY
+
+
+local block_img = {}
+block_img[1] = love.graphics.newImage('block_yellow_rectangle.png')
+block_img[2] = love.graphics.newImage('block_red_rectangle.png')
+block_img[3] = love.graphics.newImage('block_black_rectangle.png')
 
 function blocks.load(height, width)
   blocks.rows = 7          
@@ -12,18 +17,19 @@ function blocks.load(height, width)
   blocks.horizontal_distance = 0
   blocks.vertical_distance = 0
   blocks.current_level_blocks = {}
-  scaleX, scaleY = getImageScaleForNewDimensions(block_img, blocks.block_width, blocks.block_height)
+  scaleX, scaleY = getImageScaleForNewDimensions(block_img[1], blocks.block_width, blocks.block_height)
 end
 
-function blocks.new_block(position_x, position_y, width, height)
-  return ({ position_x = position_x,
+function blocks.new_block(position_x, position_y, width, height, life)
+  return ({ life = 3,
+            position_x = position_x,
             position_y = position_y,
             width = width or blocks.block_width,          
             height = height or blocks.block_height })
 end
 
 function blocks.draw_block(single_block)
-  love.graphics.draw(block_img,
+  love.graphics.draw(block_img[single_block.life],
                      single_block.position_x,
                      single_block.position_y,
                      0,
@@ -42,9 +48,8 @@ function blocks.construct_level(level_blocks_arrangement)
         local new_block_position_y = blocks.top_left_position_y +
              (row_index - 1) *
              (blocks.block_height + blocks.vertical_distance)
-        local new_block = blocks.new_block( new_block_position_x,
-                                              new_block_position_y)
-
+        local new_block = blocks.new_block(new_block_position_x, new_block_position_y)
+        
         table.insert (blocks.current_level_blocks, new_block)
        end
     end
@@ -71,7 +76,10 @@ function blocks.update_block(single_block)
 end
 
 function blocks.block_hit_by_ball(i, block, shift_ball_x, shift_ball_y)
-   table.remove(blocks.current_level_blocks, i)                
+  block.life = block.life - 1
+  if block.life == 0 then
+    table.remove(blocks.current_level_blocks, i)    
+  end            
 end
 
 function getImageScaleForNewDimensions(image, newWidth, newHeight)
