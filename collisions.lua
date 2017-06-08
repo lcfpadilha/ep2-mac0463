@@ -1,11 +1,12 @@
 local vector          = require 'vector'
 local collisions      = {}
 
-function collisions.resolve_collisions(ball, blocks, walls, platform, game)
+function collisions.resolve_collisions(ball, blocks, walls, platform, game, powers)
   collisions.ball_platform_collision (ball, platform)
   collisions.ball_walls_collision (ball, walls)
-  collisions.ball_blocks_collision (ball, blocks, game)
+  collisions.ball_blocks_collision (ball, blocks, game, powers)
   collisions.platform_walls_collision (platform, walls)
+  collisions.platform_powers_collision (platform, powers)
 end
 
 function collisions.check_rectangles_overlap(a, b)
@@ -93,7 +94,7 @@ function collisions.platform_walls_collision(platform, walls)
   end  
 end
 
-function collisions.ball_blocks_collision(ball, blocks, game)
+function collisions.ball_blocks_collision(ball, blocks, game, powers)
   local b = { x = ball.position.x - ball.radius,                 
               y = ball.position.y - ball.radius,
               width = 2 * ball.radius,
@@ -110,10 +111,35 @@ function collisions.ball_blocks_collision(ball, blocks, game)
     if overlap then  
       collision_sound = love.audio.newSource("button-10.wav", "stream")
       love.audio.play(collision_sound)
-      game.block_destroy()
       ball.block_rebound(shift_ball)
-      blocks.block_hit_by_ball(i, block, shift_ball_x, shift_ball_y)               
+      blocks.block_hit_by_ball(i, block, shift_ball_x, shift_ball_y)
+      if block.life == 0 then
+        game.block_destroy(block)
+        powers.can_create(0.5, block)
+      end
     end   
+  end  
+end
+
+function collisions.platform_powers_collision(platform, powers)
+  local overlap, shift_platform
+  
+  local b = { x = platform.position.x,                 
+              y = platform.position.y,
+              width = platform.width,
+              height = platform.height }
+
+  for i, power in pairs(powers.current_powers) do
+    local a = { x = power.position.x,       
+                y = power.position.y,
+                width  = 2 * power.width,
+                height = 2 * power.height }
+
+    overlap = collisions.check_rectangles_overlap(a, b)
+
+    if overlap then  
+      powers.hit_power(i, power)           
+    end  
   end  
 end
 

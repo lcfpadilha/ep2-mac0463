@@ -5,6 +5,7 @@ local walls       = require 'walls'
 local levels      = require 'levels'
 local collisions  = require 'collisions'
 local game        = require 'game'
+local powers      = require 'powers'
 local gamestate   = "game"
 local width
 local height
@@ -18,11 +19,12 @@ function love.load()
   blocks.load(height, width)
   ball.load(height, width, platform)
   walls.load(height, width)
-  levels.load()
   game.load()
-  blocks.construct_level(levels.sequence[1])  
+  levels.load()
   walls.construct_walls()
+  blocks.construct_level(levels.sequence[1])  
   levels.play_audio()
+
   love.graphics.setBackgroundColor(57, 179, 198)
 end
  
@@ -33,8 +35,9 @@ function love.update(dt)
     levels.update()
     ball.update(dt, platform)
     platform.update(dt)
-    collisions.resolve_collisions(ball, blocks, walls, platform, game)
+    collisions.resolve_collisions(ball, blocks, walls, platform, game, powers)
     blocks.update(dt)
+    powers.update(dt, height)
     if game.check_life_lost(ball, height) == false then
       gamestate = "gameover"
     end
@@ -60,12 +63,14 @@ function love.draw()
     ball.draw()
     blocks.draw()
     walls.draw()
+    powers.draw()
     game.draw_hud()
   elseif gamestate == "gamepaused" then
     platform.draw()
     ball.draw()
     blocks.draw()
     walls.draw()
+    powers.draw()
     game.draw_hud()
     love.graphics.printf("Jogo pausado!", 
       (width/2)-100, height/2, 200, "center")
@@ -74,6 +79,7 @@ function love.draw()
     ball.draw()
     blocks.draw()
     walls.draw()
+    powers.draw()
     game.draw_hud()
     levels.draw_level(width, height)
   elseif gamestate == "gamefinished" then

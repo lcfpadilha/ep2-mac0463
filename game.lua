@@ -3,8 +3,9 @@ local multiplier       = 1.0
 local best_score       = 0
 local destroyed_blocks = 0
 local heart_image      = love.graphics.newImage('heart.png')
+local powers           = require 'powers'
 
-function game.load()
+function game.load(width, height)
     game.life           = 3
     multiplier          = 1.0
     destroyed_blocks    = 0
@@ -47,12 +48,12 @@ function game.check_life_lost(ball, height)
   end
 end
 
-function game.block_destroy()
-    game.current_points = game.current_points + 25 * multiplier
-    destroyed_blocks = destroyed_blocks + 1
-    if destroyed_blocks % 10 == 0 and multiplier < 4 then
-        multiplier = multiplier + 1
-    end
+function game.block_destroy(block)
+  game.current_points = game.current_points + 25 * multiplier
+  destroyed_blocks = destroyed_blocks + 1
+  if destroyed_blocks % 10 == 0 and multiplier < 4 then
+      multiplier = multiplier + 1
+  end
 end
 
 return game

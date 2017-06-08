@@ -21,7 +21,7 @@ function blocks.load(height, width)
 end
 
 function blocks.new_block(position_x, position_y, width, height, life)
-  return ({ life = 3,
+  return ({ life = 2,
             position_x = position_x,
             position_y = position_y,
             width = width or blocks.block_width,          
