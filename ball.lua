@@ -2,16 +2,18 @@ local vector = require "vector"
 local ball = {}
 local sign = math.sign or function(x) return x < 0 and -1 or x > 0 and 1 or 0 end
 local initial_speed_y
+local speed_increase
 local scaleX, scaleY
 local ball_img = love.graphics.newImage('ball_gray.png')
 
-function ball.load(height, width, platform)
+function ball.load(height, width, platform, levels)
   ball.speed    = vector(0, 0)
   ball.radius  = width * 0.02
   ball.collision_counter = 0
   ball.stuck_on_platform = true
   ball.follow_platform(platform)
-  initial_speed_y = height / 2.0
+  initial_speed_y = levels.ball_speed_y[levels.current_level]
+  speed_increase  = levels.ball_increase[levels.current_level]
   scaleX, scaleY = getImageScaleForNewDimensions(ball_img, 2*ball.radius, 2*ball.radius)
 end
 
@@ -130,7 +132,6 @@ function ball.increase_collision_counter()
 end
 
 function ball.increase_speed_after_collision()
-  local speed_increase = 20
   local each_n_collisions = 10
   if ball.collision_counter ~= 0 and 
     ball.collision_counter % each_n_collisions == 0 then

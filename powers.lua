@@ -1,8 +1,9 @@
 local vector = require 'vector'
+local probability
 local powers = {}
-powers.gravity      = 100
-powers.power_height = 10
-powers.power_width  = 10
+powers.gravity        = 100
+powers.power_height   = 10
+powers.power_width    = 10
 powers.current_powers = {}
 
 function powers.update(dt, height)
@@ -18,6 +19,10 @@ function powers.draw()
   for _, power in pairs(powers.current_powers) do
     powers.draw_power(power)
   end
+end
+
+function powers.set_probability(new_prob)
+  probability = new_prob
 end
 
 function powers.draw_power(single_power)
@@ -43,7 +48,7 @@ function powers.new_power(position_x, position_y, type)
           })
 end
 
-function powers.can_create(probability, block)
+function powers.can_create(block)
   math.randomseed(os.time())
   x = math.random()
   if x <= probability then

@@ -1,5 +1,6 @@
-local vector          = require 'vector'
-local collisions      = {}
+local vector            = require 'vector'
+local collisions        = {}
+local power_probability
 
 function collisions.resolve_collisions(ball, blocks, walls, platform, game, powers)
   collisions.ball_platform_collision (ball, platform)
@@ -115,7 +116,7 @@ function collisions.ball_blocks_collision(ball, blocks, game, powers)
       blocks.block_hit_by_ball(i, block, shift_ball_x, shift_ball_y)
       if block.life == 0 then
         game.block_destroy(block)
-        powers.can_create(0.5, block)
+        powers.can_create(block)
       end
     end   
   end  

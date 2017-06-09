@@ -20,12 +20,12 @@ function blocks.load(height, width)
   scaleX, scaleY = getImageScaleForNewDimensions(block_img[1], blocks.block_width, blocks.block_height)
 end
 
-function blocks.new_block(position_x, position_y, width, height, life)
-  return ({ life = 2,
+function blocks.new_block(position_x, position_y, life)
+  return ({ life = life,
             position_x = position_x,
             position_y = position_y,
-            width = width or blocks.block_width,          
-            height = height or blocks.block_height })
+            width =  blocks.block_width,          
+            height = blocks.block_height })
 end
 
 function blocks.draw_block(single_block)
@@ -37,18 +37,18 @@ function blocks.draw_block(single_block)
                      scaleY)   
 end
 
-function blocks.construct_level(level_blocks_arrangement)
+function blocks.construct_level(level_blocks_arrangement, level_blocks_life)
   blocks.no_more_blocks = false
   for row_index, row in ipairs(level_blocks_arrangement) do
-    for col_index, blocktype in ipairs(row) do
-      if blocktype ~= 0 then
+    for col_index, blocklife in ipairs(row) do
+      if blocklife ~= 0 then
         local new_block_position_x = blocks.top_left_position_x +
              (col_index - 1) *
              (blocks.block_width + blocks.horizontal_distance)
         local new_block_position_y = blocks.top_left_position_y +
              (row_index - 1) *
              (blocks.block_height + blocks.vertical_distance)
-        local new_block = blocks.new_block(new_block_position_x, new_block_position_y)
+        local new_block = blocks.new_block(new_block_position_x, new_block_position_y, blocklife)
         
         table.insert (blocks.current_level_blocks, new_block)
        end

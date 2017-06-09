@@ -15,14 +15,15 @@ function love.load()
   success = love.window.setMode(width, height, flags)
   -- width, height, flags = love.window.getMode()
   
+  levels.load()
   platform.load(height, width)
   blocks.load(height, width)
-  ball.load(height, width, platform)
+  ball.load(height, width, platform, levels)
+  blocks.construct_level(levels.sequence[1])  
+  powers.set_probability(levels.power_up_prob[1])
   walls.load(height, width)
   game.load()
-  levels.load()
   walls.construct_walls()
-  blocks.construct_level(levels.sequence[1])  
   levels.play_audio()
 
   love.graphics.setBackgroundColor(57, 179, 198)
@@ -116,14 +117,14 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
   elseif gamestate == "gamechangelevel" then
     if key == "space" then
       gamestate = "game"
-      ball.load(height, width, platform)
+      ball.load(height, width, platform, levels)
     end
   elseif gamestate == "gamefinished" or gamestate == "gameover" then
     if key == 'return' then
       game.load()
       platform.load(height, width)
       blocks.load(height, width)
-      ball.load(height, width, platform)
+      ball.load(height, width, platform, levels)
       levels.current_level = 1
       blocks.construct_level(levels.sequence[1])
       levels.load()
@@ -143,16 +144,16 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     gamestate = "game"
   elseif gamestate == "gamechangelevel" then
     gamestate = "game"
-    ball.load(height, width, platform)
+    ball.load(height, width, platform, levels)
   elseif gamestate == "gamefinished" or gamestate == "gameover" then
     width, height, flags = 320, 526, {}
     game.load()
     platform.load(height, width)
     blocks.load(height, width)
-    ball.load(height, width, platform)
+    ball.load(height, width, platform, levels)
     levels.current_level = 1
-
     blocks.construct_level(levels.sequence[1])
+    powers.set_probability(levels.power_up_prob[1])
     levels.load()
     gamestate = "game"
   end  
@@ -165,7 +166,7 @@ function switch_to_next_level(blocks)
     if levels.current_level < #levels.sequence then  
       levels.change_level()
       blocks.construct_level(levels.sequence[levels.current_level]) 
-      platform.load(height, width)
+      powers.set_probability(levels.power_up_prob[levels.current_level])
       gamestate = "gamechangelevel"                                               
     else
       --levels.gamefinished = true
