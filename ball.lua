@@ -3,6 +3,7 @@ local ball = {}
 local sign = math.sign or function(x) return x < 0 and -1 or x > 0 and 1 or 0 end
 local initial_speed_y
 local speed_increase
+local speedpowerup = 10
 local scaleX, scaleY
 local ball_img = love.graphics.newImage('ball_gray.png')
 
@@ -139,6 +140,25 @@ function ball.increase_speed_after_collision()
   end
 end
 
+function ball.disablepower(id)
+  if (id == 3) then
+    print("desativando Speedup ball")
+    ball.speed = ball.speed - ball.speed:normalized() * speed_increase
+  else
+    print("desativando Speeddown ball")
+    ball.speed = ball.speed + ball.speed:normalized() * speed_increase
+  end
+end
+
+function ball.enablepower(id)
+  if (id == 3) then
+    print("ativando Speedup ball")
+    ball.speed = ball.speed + ball.speed:normalized() * speed_increase
+  else
+    print("ativando Speeddown ball")
+    ball.speed = ball.speed - ball.speed:normalized() * speed_increase
+  end
+end
 
 -- criei essa funcao pra qnd o jogo acaba e recomeca pq n achei o que vc faz qnd a bola morre
 function ball.reposition(height, width)

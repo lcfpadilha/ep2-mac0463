@@ -38,7 +38,7 @@ function love.update(dt)
     platform.update(dt)
     collisions.resolve_collisions(ball, blocks, walls, platform, game, powers)
     blocks.update(dt)
-    powers.update(dt, height)
+    powers.update(dt, height, platform, ball)
     if game.check_life_lost(ball, height) == false then
       gamestate = "gameover"
     end

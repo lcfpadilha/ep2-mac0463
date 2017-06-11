@@ -5,12 +5,21 @@ powers.gravity        = 100
 powers.power_height   = 10
 powers.power_width    = 10
 powers.current_powers = {}
+powers.lifetime = {5, 5, 5, 5} --vida util de cada powerup
+powers.deadline_powers= {-1, -1, -1, -1} -- deadline
 
-function powers.update(dt, height)
+function powers.update(dt, height, platform, ball)
   for i, power in pairs(powers.current_powers) do
     power.position = power.position + (dt * vector(0, powers.gravity))
     if power.position.y > height then
       table.remove(powers.current_powers, i)
+    end
+  end
+  for j, deadline in pairs(powers.deadline_powers) do
+    -- se um powerup chega ao fim
+    if deadline ~= -1 and deadline < love.timer.getTime() then
+      powers.disablepower(j, platform, ball)
+      powers.deadline_powers[j] = -1
     end
   end
 end
@@ -33,10 +42,38 @@ function powers.draw_power(single_power)
                         100)
 end
 
-function powers.hit_power(index, power)
+function powers.hit_power(index, power, platform, ball)
   --faça a coisa baseada no power.my_type
   print(power.my_type)
+  powers.enablepower(power.my_type, platform, ball)
+  powers.deadline_powers[power.my_type] = love.timer.getTime() + powers.lifetime[power.my_type]
   table.remove(powers.current_powers, index)
+end
+
+function powers.enablepower(id, platform, ball)
+  print("Ativando " .. id)
+  if (id == 1) then
+    platform.enablepower(id) -- platform speedup
+  elseif (id == 2) then
+    platform.enablepower(id) -- platform speeddown
+  elseif (id == 3) then
+    ball.enablepower(id)     -- ball speedup
+  else
+    ball.enablepower(id)     -- ball speeddown
+  end
+end
+
+function powers.disablepower(id, platform, ball)
+  print("desativando " .. id)
+    if (id == 1) then
+    platform.disablepower(id) -- platform speedup
+  elseif (id == 2) then
+    platform.disablepower(id) -- platform speeddown
+  elseif (id == 3) then
+    ball.disablepower(id)     -- ball speedup
+  else
+    ball.disablepower(id)     -- ball speeddown
+  end
 end
 
 function powers.new_power(position_x, position_y, type)

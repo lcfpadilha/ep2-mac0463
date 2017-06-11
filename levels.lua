@@ -101,7 +101,7 @@ function create_random_level(index, difficulty)
   end
   levels.sequence[index] = grid
   if difficulty == 4 then
-    levels.audio_source[index] = love.audio.newSource()
+    levels.audio_source[index] = love.audio.newSource("caution-path-01.mp3", "static")
   else
     levels.audio_source[index]  = love.audio.newSource("caution-path-01.mp3", "static")
   end

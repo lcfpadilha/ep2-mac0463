@@ -7,7 +7,7 @@ function collisions.resolve_collisions(ball, blocks, walls, platform, game, powe
   collisions.ball_walls_collision (ball, walls)
   collisions.ball_blocks_collision (ball, blocks, game, powers)
   collisions.platform_walls_collision (platform, walls)
-  collisions.platform_powers_collision (platform, powers)
+  collisions.platform_powers_collision (platform, powers, ball)
 end
 
 function collisions.check_rectangles_overlap(a, b)
@@ -122,7 +122,7 @@ function collisions.ball_blocks_collision(ball, blocks, game, powers)
   end  
 end
 
-function collisions.platform_powers_collision(platform, powers)
+function collisions.platform_powers_collision(platform, powers, ball)
   local overlap, shift_platform
   
   local b = { x = platform.position.x,                 
@@ -139,7 +139,7 @@ function collisions.platform_powers_collision(platform, powers)
     overlap = collisions.check_rectangles_overlap(a, b)
 
     if overlap then  
-      powers.hit_power(i, power)           
+      powers.hit_power(i, power, platform, ball)          
     end  
   end  
 end
