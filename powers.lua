@@ -90,7 +90,7 @@ function powers.can_create(block)
   x = math.random()
   if x <= probability then
     -- Melhorar a escolha do type e da probability (talvez usar uma probabilidade mais baixa)
-    local new_power = powers.new_power(block.position_x, block.position_y, 1)
+    local new_power = powers.new_power(block.position_x, block.position_y, math.random(1, 4))
     table.insert (powers.current_powers, new_power)
   end
 end
