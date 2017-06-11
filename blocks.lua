@@ -39,6 +39,7 @@ end
 
 function blocks.construct_level(level_blocks_arrangement, level_blocks_life)
   blocks.no_more_blocks = false
+  blocks.current_level_blocks = {}
   for row_index, row in ipairs(level_blocks_arrangement) do
     for col_index, blocklife in ipairs(row) do
       if blocklife ~= 0 then

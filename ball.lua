@@ -7,7 +7,7 @@ local speedpowerup = 100
 local scaleX, scaleY
 local ball_img = love.graphics.newImage('ball_gray.png')
 
-function ball.load(height, width, platform, levels)
+function ball.load(width, platform, levels)
   ball.speed    = vector(0, 0)
   ball.radius  = width * 0.02
   ball.collision_counter = 0
@@ -44,7 +44,6 @@ end
 function ball.launch_from_platform()
    if ball.stuck_on_platform then
       ball.stuck_on_platform = false
-      math.randomseed(os.time())
       ball.speed = vector(math.random(-150, 150), initial_speed_y)
    end
 end
@@ -142,28 +141,18 @@ end
 
 function ball.disablepower(id)
   if (id == 3) then
-    print("desativando Speedup ball")
     ball.speed = ball.speed - ball.speed:normalized() * speedpowerup
   else
-    print("desativando Speeddown ball")
     ball.speed = ball.speed + ball.speed:normalized() * speedpowerup
   end
 end
 
 function ball.enablepower(id)
   if (id == 3) then
-    print("ativando Speedup ball")
     ball.speed = ball.speed + ball.speed:normalized() * speedpowerup
   else
-    print("ativando Speeddown ball")
     ball.speed = ball.speed - ball.speed:normalized() * speedpowerup
   end
-end
-
--- criei essa funcao pra qnd o jogo acaba e recomeca pq n achei o que vc faz qnd a bola morre
-function ball.reposition(height, width)
-  ball.position.x = height / 2
-  ball.position.y = width - 100
 end
 
 function getImageScaleForNewDimensions(image, newWidth, newHeight)

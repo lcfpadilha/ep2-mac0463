@@ -10,6 +10,10 @@ function platform.load(height, width)
   platform.height   = 0.02 * height
 end
 
+function platform.reset(height, width)
+  platform.position = vector((width/2) - (platform.width/2), 0.95*height)
+end
+
 function platform.update(dt)
   local touches = love.touch.getTouches()
 

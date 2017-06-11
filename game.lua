@@ -3,6 +3,9 @@ local multiplier       = 1.0
 local best_score       = 0
 local destroyed_blocks = 0
 local heart_image      = love.graphics.newImage('heart.png')
+local menu_img         = love.graphics.newImage('menu.png')
+local pause_img        = love.graphics.newImage('pause.png')
+local game_over_img    = love.graphics.newImage('game_over.png')
 local powers           = require 'powers'
 
 function game.load(width, height)
@@ -10,6 +13,13 @@ function game.load(width, height)
     multiplier          = 1.0
     destroyed_blocks    = 0
     game.current_points = 0
+end
+
+function game.reset()
+  game.life = 3
+  multiplier = 1.0
+  destroyed_blocks = 0
+  game.current_points = 0
 end
 
 function game.draw_hud()
@@ -28,6 +38,20 @@ function game.draw_hud()
   position_x = 150
   love.graphics.printf("Pontos: "..tostring(game.current_points), position_x, position_y - 3, 200, "center")
   love.graphics.printf("x "..tostring(multiplier), position_x, position_y + 15, 200,"center")
+end
+
+function game.show_mainmenu()
+  love.graphics.draw(menu_img, 0, 0)
+end
+
+function game.show_pausemenu()
+  love.graphics.draw(pause_img, 0, 0)
+end
+
+function game.show_gameover()
+  love.graphics.draw(game_over_img, 0, 0)
+  love.graphics.printf("Pontos: "..tostring(game.current_points), 66, 340, 200, "center")
+  love.graphics.printf("Pontuação máxima: "..tostring(best_score), 66, 360, 200, "center")
 end
 
 function game.check_life_lost(ball, height)

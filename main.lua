@@ -9,8 +9,6 @@ local powers      = require 'powers'
 local gamestate   = "menu"
 local width
 local height
-local menu_img = love.graphics.newImage('menu.png')
-local pause_img = love.graphics.newImage('pause.png')
 
 function love.load()
   width, height, flags = 320, 526, {}
@@ -20,7 +18,7 @@ function love.load()
   levels.load()
   platform.load(height, width)
   blocks.load(height, width)
-  ball.load(height, width, platform, levels)
+  ball.load(width, platform, levels)
   blocks.construct_level(levels.sequence[1])  
   powers.set_probability(levels.power_up_prob[1])
   walls.load(height, width)
@@ -54,14 +52,14 @@ function love.update(dt)
   elseif gamestate == "gameover" then
     levels.update()
   end
-
+  math.randomseed(os.time() * 1000000)
 end
  
 function love.draw()
   if gamestate == "menu" then
     walls.draw()
     platform.draw()
-    love.graphics.draw(menu_img, 0, 0)
+    game.show_mainmenu()
   elseif gamestate == "game" then
     platform.draw()
     ball.draw()
@@ -76,7 +74,7 @@ function love.draw()
     walls.draw()
     powers.draw()
     game.draw_hud()
-    love.graphics.draw(pause_img, 0, 0)
+    game.show_pausemenu()
   elseif gamestate == "gamechangelevel" then
     platform.draw()
     ball.draw()
@@ -89,10 +87,8 @@ function love.draw()
     love.graphics.printf("Parabéns!\n" ..
            "Você finalizou o jogo! Clique para recomeçar!",
         (width/2)-100, height/2, 200, "center")
-    elseif gamestate == "gameover" then
-    love.graphics.printf("Você perdeu o jogo!\n" ..
-           "Clique para recomeçar!",
-        (width/2)-100, height/2, 200, "center")
+  elseif gamestate == "gameover" then
+    game.show_gameover()
   end
 
 end
@@ -120,17 +116,15 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
   elseif gamestate == "gamechangelevel" then
     if key == "space" then
       gamestate = "game"
-      ball.load(height, width, platform, levels)
+      ball.load(width, platform, levels)
     end
   elseif gamestate == "gamefinished" or gamestate == "gameover" then
     if key == 'return' then
-      game.load()
-      platform.load(height, width)
-      blocks.load(height, width)
-      ball.load(height, width, platform, levels)
-      levels.current_level = 1
-      blocks.construct_level(levels.sequence[1])
-      levels.load()
+      game.reset()
+      platform.reset(height, width)
+      ball.load(width, platform, levels)
+      levels.reset()
+      blocks.construct_level(levels.sequence[levels.current_level])
       gamestate = "game"
     elseif key == 'escape' then
       love.event.quit()
@@ -147,20 +141,15 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
     gamestate = "game"
   elseif gamestate == "gamechangelevel" then
     gamestate = "game"
-    ball.load(height, width, platform, levels)
+    ball.load(width, platform, levels)
   elseif gamestate == "gamefinished" or gamestate == "gameover" then
-    width, height, flags = 320, 526, {}
-    game.load()
-    platform.load(height, width)
-    blocks.load(height, width)
-    ball.load(height, width, platform, levels)
-    levels.current_level = 1
-    blocks.construct_level(levels.sequence[1])
-    powers.set_probability(levels.power_up_prob[1])
-    levels.load()
+    game.reset()
+    platform.reset(height, width)
+    ball.load(width, platform, levels)
+    levels.reset()
+    blocks.construct_level(levels.sequence[levels.current_level])
     gamestate = "game"
-  end  
-  -- TODO comandos do keyrelease para android
+  end
 end
 
 -- funcao originalmente do levels.lua

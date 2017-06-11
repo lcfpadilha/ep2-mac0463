@@ -22,6 +22,13 @@ function levels.load()
   create_all_levels()
 end
 
+function levels.reset()
+  if levels.audio_source[levels.current_level]:isPlaying() == true then
+    love.audio.stop(levels.audio_source[levels.current_level])
+  end
+  levels.current_level = 1
+end
+
 function levels.update()
   if levels.audio_source[levels.current_level]:isPlaying() == false then
     love.audio.play(levels.audio_source[levels.current_level])
@@ -92,7 +99,6 @@ function create_all_levels()
 end
 
 function create_random_level(index, difficulty)
-  math.randomseed(os.clock())
   grid = {}
   for i = 1, 7 do
     grid[i] = {}
