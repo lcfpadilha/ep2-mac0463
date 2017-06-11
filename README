@@ -19,7 +19,9 @@ a experiência será totalmente diferente!
 
 CONTROLES
 Para mover a plataforma para direita, basta apertar na parte direita da tela e
-o mesmo vale para a esquerda.
+o mesmo vale para a esquerda. A bola começará na plataforma, para soltá-la,
+basta tocar na tela.
+Para pausar o jogo, basta pressionar o botão de menu do Android.
 
 DESENVOLVIMENTO
 Esse BrickBreaker foi desenvolvido com a ajuda do Löve2D, uma plataforma para 
@@ -31,5 +33,5 @@ $ tar -cvf game.love *
 $ cp game.love ../StartGamedev
 $ cd ../StartGamedev
 $ ./make-apk.sh
-
-O .apk estará na pasta StartGamedev
+Isso irá gerar um arquivo chamado game.apk e que estará na pasta StartGamedev.
+Basta instalá-lo e poderá jogar!

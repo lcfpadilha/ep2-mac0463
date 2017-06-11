@@ -11,9 +11,9 @@ local width
 local height
 
 function love.load()
-  -- width, height, flags = 320, 526, {}
-  -- success = love.window.setMode(width, height, flags)
-  width, height, flags = love.window.getMode()
+  width, height, flags = 320, 526, {}
+  success = love.window.setMode(width, height, flags)
+  -- width, height, flags = love.window.getMode()
   
   levels.load()
   platform.load(height, width)
