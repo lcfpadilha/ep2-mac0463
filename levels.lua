@@ -1,5 +1,6 @@
 local levels = {}
 local max_levels
+local pause_sound = love.audio.newSource("pause.wav", "static")
 local speed_y_values        = { 250, 300, 375, 450 }
 local speed_increase_values = { 20, 30, 40, 60 }
 local power_up_values       = { 0.15, 0.1, 0.05, 0.05 }
@@ -29,6 +30,17 @@ end
 
 function levels.play_audio()
   love.audio.play(levels.audio_source[levels.current_level])
+end
+
+function levels.pause_audio()
+  if levels.audio_source[levels.current_level]:isPlaying() == true then
+    love.audio.pause(levels.audio_source[levels.current_level])
+    love.audio.play(pause_sound)
+  end
+end
+
+function levels.unpause()
+  love.audio.play(pause_sound)
 end
 
 function levels.draw_level(width, height)
@@ -69,8 +81,6 @@ function create_all_levels()
   levels.ball_speed_y[2]  = 250
   levels.ball_increase[2] = 20
   levels.power_up_prob[2] = 0.15
-
-  -- TODO: INFINITAAS FASES (DÁ PRA FAZER COM O RANDOM)
 
   create_random_level(3, 1)
   create_random_level(4, 2)

@@ -6,9 +6,11 @@ local levels      = require 'levels'
 local collisions  = require 'collisions'
 local game        = require 'game'
 local powers      = require 'powers'
-local gamestate   = "game"
+local gamestate   = "menu"
 local width
 local height
+local menu_img = love.graphics.newImage('menu.png')
+local pause_img = love.graphics.newImage('pause.png')
 
 function love.load()
   width, height, flags = 320, 526, {}
@@ -46,7 +48,7 @@ function love.update(dt)
   elseif gamestate == "gamechangelevel" then
     levels.update()
   elseif gamestate == "gamepaused" then
-    levels.update()
+    levels.pause_audio()
   elseif gamestate == "gamefinished" then
     levels.update()
   elseif gamestate == "gameover" then
@@ -57,8 +59,9 @@ end
  
 function love.draw()
   if gamestate == "menu" then
-    love.graphics.printf("Menu. Clique para continuar.",
-          (width/2)-100, height/2, 200, "center")
+    walls.draw()
+    platform.draw()
+    love.graphics.draw(menu_img, 0, 0)
   elseif gamestate == "game" then
     platform.draw()
     ball.draw()
@@ -73,8 +76,7 @@ function love.draw()
     walls.draw()
     powers.draw()
     game.draw_hud()
-    love.graphics.printf("Jogo pausado!", 
-      (width/2)-100, height/2, 200, "center")
+    love.graphics.draw(pause_img, 0, 0)
   elseif gamestate == "gamechangelevel" then
     platform.draw()
     ball.draw()
@@ -111,6 +113,7 @@ function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra
   elseif gamestate == "gamepaused" then
     if key == "menu" or key == 'return' then
       gamestate = "game"
+      levels.unpause()
     elseif key == 'escape' then
       love.event.quit()
     end

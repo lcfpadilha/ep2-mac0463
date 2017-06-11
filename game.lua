@@ -48,6 +48,12 @@ function game.check_life_lost(ball, height)
   end
 end
 
+function game.add_life()
+  if game.life < 10 then
+    game.life = game.life + 1
+  end
+end
+
 function game.block_destroy(block)
   game.current_points = game.current_points + 25 * multiplier
   destroyed_blocks = destroyed_blocks + 1

@@ -1,5 +1,7 @@
 local walls = {}
 local vector = require 'vector'
+local wall_img = love.graphics.newImage('wall.png')
+
 function walls.load(height, width)
   walls.wall_thickness = 0.025 * width
   walls.wall_thickness_top = 0.1 * height
@@ -22,14 +24,14 @@ function walls.construct_walls()
 end
 
 function walls.draw_wall(single_wall)
-  local r, g, b, a = love.graphics.getColor()
-  love.graphics.setColor(228, 47, 12)
-  love.graphics.rectangle('fill',
-                           single_wall.position.x,
-                           single_wall.position.y,
-                           single_wall.width,
-                           single_wall.height) 
-love.graphics.setColor(r, g, b, a) 
+  wall_img:setWrap('repeat','repeat')
+  quad = love.graphics.newQuad( single_wall.position.x, 
+                                single_wall.position.y, 
+                                single_wall.width, 
+                                single_wall.height, 
+                                50, 
+                                30)
+  love.graphics.draw( wall_img, quad, single_wall.position.x, single_wall.position.y )
 end
 
 function walls.draw()

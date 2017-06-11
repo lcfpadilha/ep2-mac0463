@@ -4,9 +4,9 @@ local speeddiff      = 100
 local platform_image = love.graphics.newImage('platform.png')
 
 function platform.load(height, width) 
-  platform.position = vector(width / 2, 0.95*height)
   platform.speed    = vector(width / 1.5, 0)
   platform.width    = width / 5
+  platform.position = vector((width/2) - (platform.width/2), 0.95*height)
   platform.height   = 0.02 * height
 end
 
