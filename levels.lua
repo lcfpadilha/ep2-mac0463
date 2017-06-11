@@ -60,11 +60,15 @@ function levels.change_level()
   love.audio.stop(levels.audio_source[levels.current_level - 1])
 end
 
+function levels.create_new_level()
+  levels.current_level = levels.current_level + 1
+  love.audio.stop(levels.audio_source[levels.current_level - 1])
+  create_random_level(levels.current_level)
+end
+
 function create_all_levels()
   levels.sequence[1] = {
-    { 1, 2, 1, 2, 1 },
     { 0, 2, 0, 2, 0 },
-    { 0, 2, 2, 2, 0 },
     { 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0 },
@@ -88,18 +92,21 @@ function create_all_levels()
   levels.ball_speed_y[2]  = 250
   levels.ball_increase[2] = 20
   levels.power_up_prob[2] = 0.15
-
-  create_random_level(3, 1)
-  create_random_level(4, 2)
-  create_random_level(5, 2)
-  create_random_level(6, 3)
-  create_random_level(7, 3)
-  create_random_level(8, 4)
-  create_random_level(9, 4)
 end
 
-function create_random_level(index, difficulty)
+function create_random_level(index)
   grid = {}
+  
+  if index < 4 then
+    difficulty = 1
+  elseif index < 6 then
+    difficulty = 2
+  elseif index < 10 then
+    difficulty = 3
+  else
+    difficulty = 4
+  end
+
   for i = 1, 7 do
     grid[i] = {}
     for j = 1, 5 do
@@ -119,7 +126,7 @@ function create_random_level(index, difficulty)
   if difficulty == 4 then
     levels.audio_source[index] = love.audio.newSource("caution-path-01.mp3", "static")
   else
-    levels.audio_source[index]  = love.audio.newSource("caution-path-01.mp3", "static")
+    levels.audio_source[index]  = love.audio.newSource("iron-man-01.mp3", "static")
   end
   levels.ball_speed_y[index]  = speed_y_values[difficulty]
   levels.ball_increase[index] = speed_increase_values[difficulty]

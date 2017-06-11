@@ -152,7 +152,6 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
   end
 end
 
--- funcao originalmente do levels.lua
 function switch_to_next_level(blocks)
   if blocks.no_more_blocks then
     if levels.current_level < #levels.sequence then  
@@ -161,8 +160,10 @@ function switch_to_next_level(blocks)
       powers.set_probability(levels.power_up_prob[levels.current_level])
       gamestate = "gamechangelevel"                                               
     else
-      --levels.gamefinished = true
-      gamestate = "gamefinished"                     
+      levels.create_new_level()
+      blocks.construct_level(levels.sequence[levels.current_level]) 
+      powers.set_probability(levels.power_up_prob[levels.current_level])
+      gamestate = "gamechangelevel"                        
     end
   end
 end
