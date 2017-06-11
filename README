@@ -1,0 +1,35 @@
+BRICK BREAKER
+Desenvolvido por Gustavo Silva, Leonardo Padilha e Nicolas Nogueira
+
+O JOGO
+O BrickBreaker é um típico jogo arcade de Breakout, onde seu objetivo é destruir
+todos os blocos usando a bola, tomando cuidado para não deixá-la cair.
+Você vai começar com 3 vidas e perderá uma caso deixe a bola cair, mas não se 
+preocupe, você pode aumentar sua vida ao longo do jogo.
+Os blocos podem conter presentes agradáveis ou não, então tome cuidado quando 
+ver algum presente vermelho! Os verdes conterão ou um aumento na velocidade da
+plataforma ou uma diminuição na velocidade da bolinha, já os vermelhos poderão
+conter o contrário: diminuição na velocidade da sua plataforma ou um aumento na
+velocidade da bolinha.
+Quanto mais blocos você destruir sem perder uma vida, maior será seu ganho de 
+pontos, portanto, evite perder vidas para você conseguir alcançar uma melhor
+pontuação!
+Os níveis são aleatórios e infinitos, então você poderá jogar diversas vezes e
+a experiência será totalmente diferente!
+
+CONTROLES
+Para mover a plataforma para direita, basta apertar na parte direita da tela e
+o mesmo vale para a esquerda.
+
+DESENVOLVIMENTO
+Esse BrickBreaker foi desenvolvido com a ajuda do Löve2D, uma plataforma para 
+desenvolvimento de jogos usando a linguagem Lua.
+Para a criação do arquivo apk, usamos o StartGamedev mas com algumas modifica-
+ções para deixar o jogo um pouco mais pessoal.
+Para gerar o apk, basta entrar na pasta /source e executar os seguintes comandos
+$ tar -cvf game.love *
+$ cp game.love ../StartGamedev
+$ cd ../StartGamedev
+$ ./make-apk.sh
+
+O .apk estará na pasta StartGamedev

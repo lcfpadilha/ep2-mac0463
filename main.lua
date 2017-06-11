@@ -11,9 +11,9 @@ local width
 local height
 
 function love.load()
-  width, height, flags = 320, 526, {}
-  success = love.window.setMode(width, height, flags)
-  -- width, height, flags = love.window.getMode()
+  -- width, height, flags = 320, 526, {}
+  -- success = love.window.setMode(width, height, flags)
+  width, height, flags = love.window.getMode()
   
   levels.load()
   platform.load(height, width)
@@ -93,7 +93,7 @@ function love.draw()
 
 end
 
-function love.keyreleased(key, code)    -- comandos para pc para usar de ref pra cel
+function love.keyreleased(key, code)
   if gamestate == "menu" then
     if key == "return" then
       gamestate = "game"

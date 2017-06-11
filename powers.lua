@@ -1,7 +1,7 @@
 local vector = require 'vector'
 local probability
 local powers = {}
-local power_up_img = love.graphics.newImage('power_up.png')
+local power_up_img   = love.graphics.newImage('power_up.png')
 local power_down_img = love.graphics.newImage('power_down.png')
 local power_life_img = love.graphics.newImage('power_life.png')
 powers.gravity        = 100
@@ -76,7 +76,6 @@ function powers.disablepower(id, platform, ball)
 end
 
 function powers.new_power(position_x, position_y, type)
-  print(type)
   return ({ 
             position   = vector(position_x, position_y),
             radius     = powers.power_radius,
