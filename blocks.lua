@@ -1,6 +1,7 @@
+local vector = require 'vector'
 local blocks    = {}
 local scaleX, scaleY
-
+points_text = {}
 
 local block_img = {}
 block_img[1] = love.graphics.newImage('block_yellow_rectangle.png')
@@ -26,6 +27,14 @@ function blocks.new_block(position_x, position_y, life)
             position_y = position_y,
             width =  blocks.block_width,          
             height = blocks.block_height })
+end
+
+function blocks.new_points_text(position_x, position_y, deadtime, text, v_y)
+  return ({ position_x = position_x,
+            position_y = position_y,
+            text = text,
+            v_y = v_y,
+            deadtime = deadtime})
 end
 
 function blocks.draw_block(single_block)
@@ -70,6 +79,14 @@ function blocks.update(dt)
     for _, block in pairs(blocks.current_level_blocks) do
       blocks.update_block(block)
     end
+    for i, ptext in pairs(points_text) do
+      print(ptext.deadtime) 
+      if (ptext.deadtime < love.timer.getTime()) then
+        table.remove(points_text, i)
+      else
+        love.graphics.printf(ptext.text, ptext.position_x, ptext.position_y, 200, "center")
+      end
+    end
   end
 end
 
@@ -79,6 +96,8 @@ end
 function blocks.block_hit_by_ball(i, block, shift_ball_x, shift_ball_y)
   block.life = block.life - 1
   if block.life == 0 then
+    local new_points_text = blocks.new_points_text(shift_ball_x, shift_ball_y, love.timer.getTime() + 2, "100", -1*(vector(0, 100)))
+    table.insert(points_text, new_points_text)
     table.remove(blocks.current_level_blocks, i)    
   end            
 end
