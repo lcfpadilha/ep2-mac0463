@@ -135,8 +135,10 @@ end
 function love.touchpressed(id, x, y, dx, dy, pressure)
   if gamestate == "menu" then
     gamestate = "game"
-  elseif gamestate == "game" then
+  elseif gamestate == "game" and y > 50 then
     ball.launch_from_platform()
+  elseif gamestate == "game" and game.check_pause_pressed(x, y) then
+    gamestate = "gamepaused"
   elseif gamestate == "gamepaused" then
     gamestate = "game"
   elseif gamestate == "gamechangelevel" then

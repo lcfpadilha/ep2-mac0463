@@ -6,6 +6,7 @@ local heart_image      = love.graphics.newImage('heart.png')
 local menu_img         = love.graphics.newImage('menu.png')
 local pause_img        = love.graphics.newImage('pause.png')
 local game_over_img    = love.graphics.newImage('game_over.png')
+local pause_button     = love.graphics.newImage('pause_button.png')
 local powers           = require 'powers'
 
 function game.load(width, height)
@@ -38,6 +39,7 @@ function game.draw_hud()
   position_x = 150
   love.graphics.printf("Pontos: "..tostring(game.current_points), position_x, position_y - 3, 200, "center")
   love.graphics.printf("x "..tostring(multiplier), position_x, position_y + 15, 200,"center")
+  love.graphics.draw(pause_button, 0, 0)
 end
 
 function game.show_mainmenu()
@@ -52,6 +54,10 @@ function game.show_gameover()
   love.graphics.draw(game_over_img, 0, 0)
   love.graphics.printf("Pontos: "..tostring(game.current_points), 66, 340, 200, "center")
   love.graphics.printf("Pontuação máxima: "..tostring(best_score), 66, 360, 200, "center")
+end
+
+function game.check_pause_pressed(x, y)
+  return (x > 156 and y > 5 and x < 175 and y < 43)
 end
 
 function game.check_life_lost(ball, height)
