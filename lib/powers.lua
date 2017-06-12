@@ -1,9 +1,9 @@
-local vector = require 'vector'
+local vector = require 'lib/vector'
 local probability
 local powers = {}
-local power_up_img   = love.graphics.newImage('power_up.png')
-local power_down_img = love.graphics.newImage('power_down.png')
-local power_life_img = love.graphics.newImage('power_life.png')
+local power_up_img   = love.graphics.newImage('images/power_up.png')
+local power_down_img = love.graphics.newImage('images/power_down.png')
+local power_life_img = love.graphics.newImage('images/power_life.png')
 powers.gravity        = 100
 powers.power_radius   = 10
 powers.current_powers = {}

@@ -1,6 +1,6 @@
 local walls = {}
-local vector = require 'vector'
-local wall_img = love.graphics.newImage('wall.png')
+local vector = require 'lib/vector'
+local wall_img = love.graphics.newImage('images/wall.png')
 
 function walls.load(height, width)
   walls.wall_thickness = 0.025 * width

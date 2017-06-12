@@ -1,4 +1,4 @@
-local vector            = require 'vector'
+local vector            = require 'lib/vector'
 local collisions        = {}
 local power_probability
 
@@ -45,7 +45,7 @@ function collisions.ball_platform_collision(ball, platform)
 
   if overlap then  
     if ball.stuck_on_platform ~= true then
-      collision_sound = love.audio.newSource("button-4.wav", "stream")
+      collision_sound = love.audio.newSource("sounds/button-4.wav", "stream")
       love.audio.play(collision_sound)
     end
     ball.platform_rebound(shift_ball, platform)             
@@ -110,7 +110,7 @@ function collisions.ball_blocks_collision(ball, blocks, game, powers)
     overlap, shift_ball = collisions.check_rectangles_overlap(a,b)
 
     if overlap then  
-      collision_sound = love.audio.newSource("button-10.wav", "stream")
+      collision_sound = love.audio.newSource("sounds/button-10.wav", "stream")
       love.audio.play(collision_sound)
       ball.block_rebound(shift_ball)
       blocks.block_hit_by_ball(i, block, game.get_multiplier())

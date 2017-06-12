@@ -1,11 +1,11 @@
-local platform    = require 'platform'
-local ball        = require 'ball'
-local blocks      = require 'blocks'
-local walls       = require 'walls'
-local levels      = require 'levels'
-local collisions  = require 'collisions'
-local game        = require 'game'
-local powers      = require 'powers'
+local platform    = require 'lib/platform'
+local ball        = require 'lib/ball'
+local blocks      = require 'lib/blocks'
+local walls       = require 'lib/walls'
+local levels      = require 'lib/levels'
+local collisions  = require 'lib/collisions'
+local game        = require 'lib/game'
+local powers      = require 'lib/powers'
 local gamestate   = "menu"
 local width
 local height

@@ -1,7 +1,7 @@
-local vector         = require 'vector'
+local vector         = require 'lib/vector'
 local platform       = {}
 local speeddiff      = 100
-local platform_image = love.graphics.newImage('platform.png')
+local platform_image = love.graphics.newImage('images/platform.png')
 
 function platform.load(height, width) 
   platform.speed    = vector(width / 1.5, 0)
@@ -42,21 +42,17 @@ end
 
 function platform.disablepower(id)
   if (id == 1) then
-    print("desativando Speedup platform ")
     platform.speed = platform.speed - platform.speed:normalized() * speeddiff
   else
-    print("desativando Speeddown platform ")
     platform.speed = platform.speed + platform.speed:normalized() * speeddiff
   end
 end
 
 function platform.enablepower(id)
   if (id == 1) then
-    print("ativando Speedup platform ")
     platform.speed = platform.speed + platform.speed:normalized() * speeddiff
 
   else
-    print("ativando Speeddown platform")
     platform.speed = platform.speed - platform.speed:normalized() * speeddiff
   end
 end

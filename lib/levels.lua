@@ -1,6 +1,6 @@
 local levels = {}
 local max_levels
-local pause_sound = love.audio.newSource("pause.wav", "static")
+local pause_sound = love.audio.newSource("sounds/pause.wav", "static")
 local speed_y_values        = { 250, 300, 375, 450 }
 local speed_increase_values = { 20, 30, 40, 60 }
 local power_up_values       = { 0.15, 0.1, 0.05, 0.05 }
@@ -76,7 +76,7 @@ function create_all_levels()
     { 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0 }
   }
-  levels.audio_source[1]  = love.audio.newSource("iron-man-01.mp3", "static")
+  levels.audio_source[1]  = love.audio.newSource("sounds/iron-man-01.mp3", "static")
   levels.ball_speed_y[1]  = 250
   levels.ball_increase[1] = 20
   levels.power_up_prob[1] = 0.15
@@ -90,7 +90,7 @@ function create_all_levels()
     { 0, 1, 0, 1, 0 },
     { 0, 1, 1, 1, 0 }
   }
-  levels.audio_source[2]  = love.audio.newSource("iron-man-01.mp3", "static")
+  levels.audio_source[2]  = love.audio.newSource("sounds/iron-man-01.mp3", "static")
   levels.ball_speed_y[2]  = 250
   levels.ball_increase[2] = 20
   levels.power_up_prob[2] = 0.15
@@ -126,9 +126,9 @@ function create_random_level(index)
   end
   levels.sequence[index] = grid
   if difficulty == 4 then
-    levels.audio_source[index] = love.audio.newSource("caution-path-01.mp3", "static")
+    levels.audio_source[index] = love.audio.newSource("sounds/caution-path-01.mp3", "static")
   else
-    levels.audio_source[index]  = love.audio.newSource("iron-man-01.mp3", "static")
+    levels.audio_source[index]  = love.audio.newSource("sounds/iron-man-01.mp3", "static")
   end
   levels.ball_speed_y[index]  = speed_y_values[difficulty]
   levels.ball_increase[index] = speed_increase_values[difficulty]

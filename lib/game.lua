@@ -2,13 +2,12 @@ local game = {}
 local multiplier       = 1.0
 local best_score       = 0
 local destroyed_blocks = 0
-local heart_image      = love.graphics.newImage('heart.png')
-local menu_img         = love.graphics.newImage('menu.png')
-local pause_img        = love.graphics.newImage('pause.png')
-local game_over_img    = love.graphics.newImage('game_over.png')
-local pause_button     = love.graphics.newImage('pause_button.png')
-local ball_out_sound   = love.audio.newSource('ball_out.wav')
-local powers           = require 'powers'
+local heart_image      = love.graphics.newImage('images/heart.png')
+local menu_img         = love.graphics.newImage('images/menu.png')
+local pause_img        = love.graphics.newImage('images/pause.png')
+local game_over_img    = love.graphics.newImage('images/game_over.png')
+local pause_button     = love.graphics.newImage('images/pause_button.png')
+local ball_out_sound   = love.audio.newSource('sounds/ball_out.wav')
 
 function game.load(width, height)
     game.life           = 3

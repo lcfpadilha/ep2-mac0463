@@ -1,16 +1,16 @@
-local vector = require 'vector'
+local vector = require 'lib/vector'
 local blocks    = {}
 local scaleX, scaleY
 local points_text = {}
 local points_img = {}
 local block_img = {}
-block_img[1] = love.graphics.newImage('block_yellow_rectangle.png')
-block_img[2] = love.graphics.newImage('block_red_rectangle.png')
-block_img[3] = love.graphics.newImage('block_black_rectangle.png')
-points_img[1] = love.graphics.newImage('25.png')
-points_img[2] = love.graphics.newImage('50.png')
-points_img[3] = love.graphics.newImage('75.png')
-points_img[4] = love.graphics.newImage('100.png')
+block_img[1] = love.graphics.newImage('images/block_yellow_rectangle.png')
+block_img[2] = love.graphics.newImage('images/block_red_rectangle.png')
+block_img[3] = love.graphics.newImage('images/block_black_rectangle.png')
+points_img[1] = love.graphics.newImage('images/25.png')
+points_img[2] = love.graphics.newImage('images/50.png')
+points_img[3] = love.graphics.newImage('images/75.png')
+points_img[4] = love.graphics.newImage('images/100.png')
 
 function blocks.load(height, width)
   blocks.rows = 7          

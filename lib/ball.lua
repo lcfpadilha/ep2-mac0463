@@ -1,11 +1,11 @@
-local vector = require "vector"
+local vector = require "lib/vector"
 local ball = {}
 local sign = math.sign or function(x) return x < 0 and -1 or x > 0 and 1 or 0 end
 local initial_speed_y
 local speed_increase
 local speedpowerup = 100
 local scaleX, scaleY
-local ball_img = love.graphics.newImage('ball_gray.png')
+local ball_img = love.graphics.newImage('images/ball_gray.png')
 
 function ball.load(width, platform, levels)
   ball.speed    = vector(0, 0)
