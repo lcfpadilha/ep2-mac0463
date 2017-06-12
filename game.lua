@@ -7,6 +7,7 @@ local menu_img         = love.graphics.newImage('menu.png')
 local pause_img        = love.graphics.newImage('pause.png')
 local game_over_img    = love.graphics.newImage('game_over.png')
 local pause_button     = love.graphics.newImage('pause_button.png')
+local ball_out_sound   = love.audio.newSource('ball_out.wav')
 local powers           = require 'powers'
 
 function game.load(width, height)
@@ -66,7 +67,7 @@ function game.check_life_lost(ball, height)
     game.life = game.life - 1
     multiplier = 1.0
     destroyed_blocks = 0
-
+    love.audio.play(ball_out_sound)
     if game.life == 0 then
         if best_score < game.current_points  then
             best_score = game.current_points 
