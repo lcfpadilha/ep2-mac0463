@@ -113,7 +113,7 @@ function collisions.ball_blocks_collision(ball, blocks, game, powers)
       collision_sound = love.audio.newSource("button-10.wav", "stream")
       love.audio.play(collision_sound)
       ball.block_rebound(shift_ball)
-      blocks.block_hit_by_ball(i, block, shift_ball_x, shift_ball_y)
+      blocks.block_hit_by_ball(i, block)
       if block.life == 0 then
         game.block_destroy(block)
         powers.can_create(block)
