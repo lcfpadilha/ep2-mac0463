@@ -84,10 +84,14 @@ function game.add_life()
   end
 end
 
+function game.get_multiplier()
+  return multiplier
+end
+
 function game.block_destroy(block)
   game.current_points = game.current_points + 25 * multiplier
   destroyed_blocks = destroyed_blocks + 1
-  if destroyed_blocks % 10 == 0 and multiplier < 4 then
+  if destroyed_blocks % 5 == 0 and multiplier < 4 then
       multiplier = multiplier + 1
   end
 end
